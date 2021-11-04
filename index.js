@@ -35,7 +35,7 @@ async function getRecentItems() {
         }
 
         let date = item.title.match(/(\d{4}|xxxx)\-((0[1-9]|1[012])|xx)\-((0[1-9]|[12][0-9]|3[01])|xx)/);
-        let title = date[0] ? item.title.split(date[0]) : [ item.title ]
+        let title = date ? item.title.split(date[0]) : [ item.title ]
 
         try {
             await hook.send(`**${title[0]}** ${date[0] ? ` - ${date[0]}` : ""} - ${title[1] ? ` - ${title[1]}` : ""}\n> ${item.link}`);
