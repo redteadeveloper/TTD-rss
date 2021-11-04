@@ -7,13 +7,25 @@ const IMAGE_URL = 'https://opentrackers.org/wp-content/uploads/2013/07/thetrader
 hook.setUsername('TTD Bot');
 hook.setAvatar(IMAGE_URL);
 
-(async () => {
+let recentItems = []
+let recentBuildDate = ""
+
+async function getRecentItems() {
 
     let feed = await parser.parseURL('http://www.thetradersden.org/forums/external.php?type=rss2&forumids=12,13');
-    console.log("TITLE: " + feed.title);
+
+    if (feed.lastBuildDate === recentBuildDate) {
+        console.log("RETURNED: Same build date")
+        return
+    }
+
     console.log("BUILD DATE: " + feed.lastBuildDate);
 
-    for (let item of feed.items) {
+    for (let item of feed.items.reverse()) {
+
+        if (recentItems.includes(item)) {
+            console.log("RETURNED: Same item")
+        }
 
         console.log(item.title);
 
@@ -22,9 +34,8 @@ hook.setAvatar(IMAGE_URL);
 
         try {
             await hook.send(`**${title[0]}** - ${date} - ${title[1]}\n${item.link}`);
-            console.log('Successfully sent webhook');
-        }
-        catch (e){
+            console.log('=> Successfully sent webhook');
+        } catch (e) {
             console.log(e.message);
         };
 
@@ -32,4 +43,12 @@ hook.setAvatar(IMAGE_URL);
 
     }
 
-})();
+    recentItems = feed.items.reverse()
+    recentBuildDate = feed.lastBuildDate
+
+    console.log("Finished loop")
+
+}
+
+getRecentItems()
+timerId = setInterval(getRecentItems, 60000);
