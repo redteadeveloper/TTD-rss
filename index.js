@@ -38,7 +38,7 @@ async function getRecentItems() {
         let title = date ? item.title.split(date[0]) : [ item.title ]
 
         try {
-            await hook.send(`**${title[0]}** ${date[0] ? ` - ${date[0]}` : ""} - ${title[1] ? ` - ${title[1]}` : ""}\n> ${item.link}`);
+            await hook.send(`**${title[0]}** ${date ? `- ${date[0]}` : ""} ${title[1] ? `- ${title[1]}` : ""}\n> ${item.link}`);
             console.log('=> Successfully sent webhook');
         } catch (e) {
             console.log(e.message);
