@@ -8,26 +8,31 @@ hook.setUsername('TTD Bot');
 hook.setAvatar(IMAGE_URL);
 
 let recentItems = []
+let currentItems = []
 let recentBuildDate = ""
 
 async function getRecentItems() {
 
     let feed = await parser.parseURL('http://www.thetradersden.org/forums/external.php?type=rss2&forumids=12,13');
+    currentItems = []
 
-    if (feed.lastBuildDate === recentBuildDate) {
-        console.log("RETURNED: Same build date")
-        return
-    }
+    // if (feed.lastBuildDate === recentBuildDate) {
+    //     console.log("CONTINUING: Same build date")
+    //     return
+    // }
 
     console.log("BUILD DATE: " + feed.lastBuildDate);
+    console.log("START LOOP")
 
     for (let item of feed.items.reverse()) {
 
-        if (recentItems.includes(item)) {
-            console.log("RETURNED: Same item")
-        }
-
         console.log(item.title);
+        currentItems.push(item.title)
+
+        if (recentItems.includes(item.title)) {
+            console.log("CONTINUING: Same item")
+            continue
+        }
 
         let date = item.title.match(/(\d{4}|xxxx)\-((0[1-9]|1[012])|xx)\-((0[1-9]|[12][0-9]|3[01])|xx)/)[0];
         let title = item.title.split(date);
@@ -43,10 +48,10 @@ async function getRecentItems() {
 
     }
 
-    recentItems = feed.items.reverse()
+    recentItems = currentItems
     recentBuildDate = feed.lastBuildDate
 
-    console.log("Finished loop")
+    console.log(recentItems)
 
 }
 
