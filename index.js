@@ -51,4 +51,4 @@ async function getRecentItems() {
 }
 
 getRecentItems()
-timerId = setInterval(getRecentItems, 60000);
+timerId = setInterval(getRecentItems, 900000);
