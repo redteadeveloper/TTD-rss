@@ -18,6 +18,7 @@
   "homepage": "https://github.com/redteadeveloper/TTD-rss#readme",
   "dependencies": {
     "discord-webhook-node": "^1.1.8",
+    "html-to-text": "^8.1.0",
     "rss-parser": "^3.12.0"
   }
 }
